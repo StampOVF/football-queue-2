@@ -47,7 +47,7 @@ export default function Page() {
     <main className="wrap">
       <header>
         <div>
-          <h1>คิวสนามฟุตบอล</h1>
+          <h1>คิวสวนฟุตบอล Stadium </h1>
           <p className="sub">เลือกทีมแล้วกดจองคิว หน้านี้อัปเดตอัตโนมัติทุก 3 วินาที</p>
         </div>
         <p className="total">มีคิวทั้งหมด {bookings.length} คิว</p>
