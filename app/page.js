@@ -1,18 +1,22 @@
-'use client';
-import { useCallback, useEffect, useState } from 'react';
-import { TEAMS } from '../lib/teams';
+"use client";
+import { useCallback, useEffect, useState } from "react";
+import { TEAMS } from "../lib/teams";
 
-const fmt = (t) => new Date(t).toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+const fmt = (t) =>
+  new Date(t).toLocaleTimeString("th-TH", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
 export default function Page() {
   const [bookings, setBookings] = useState([]);
   const [formTeam, setFormTeam] = useState(null);
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
 
   const load = useCallback(async () => {
     try {
-      const res = await fetch('/api/bookings', { cache: 'no-store' });
+      const res = await fetch("/api/bookings", { cache: "no-store" });
       setBookings(await res.json());
     } catch {}
   }, []);
@@ -27,19 +31,19 @@ export default function Page() {
     e.preventDefault();
     if (!name.trim() || busy) return;
     setBusy(true);
-    await fetch('/api/bookings', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    await fetch("/api/bookings", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ teamId: formTeam, name }),
     });
-    setName('');
+    setName("");
     setFormTeam(null);
     setBusy(false);
     load();
   }
 
   async function remove(id) {
-    await fetch(`/api/bookings?id=${id}`, { method: 'DELETE' });
+    await fetch(`/api/bookings?id=${id}`, { method: "DELETE" });
     load();
   }
 
@@ -47,8 +51,10 @@ export default function Page() {
     <main className="wrap">
       <header>
         <div>
-          <h1>คิวสวนฟุตบอล Stadium </h1>
-          <p className="sub">เลือกทีมแล้วกดจองคิว หน้านี้อัปเดตอัตโนมัติทุก 3 วินาที</p>
+          <h1>คิวสวนประดู่ Stadium </h1>
+          <p className="sub">
+            เลือกทีมแล้วกดจองคิว หน้านี้อัปเดตอัตโนมัติทุก 3 วินาที
+          </p>
         </div>
         <p className="total">มีคิวทั้งหมด {bookings.length} คิว</p>
       </header>
@@ -58,7 +64,11 @@ export default function Page() {
           const queue = bookings.filter((b) => b.teamId === t.id);
           const [current, ...waiting] = queue;
           return (
-            <section key={t.id} className="team" style={{ '--c': t.color, '--on': t.ink }}>
+            <section
+              key={t.id}
+              className="team"
+              style={{ "--c": t.color, "--on": t.ink }}
+            >
               <div className="top">
                 <h2>{t.name}</h2>
                 <span className="count">{queue.length} คิว</span>
@@ -69,7 +79,12 @@ export default function Page() {
                   <>
                     <span className="label">กำลังเล่น</span>
                     <strong>{current.name}</strong>
-                    <button className="ghost" onClick={() => remove(current.id)}>จบคิว</button>
+                    <button
+                      className="ghost"
+                      onClick={() => remove(current.id)}
+                    >
+                      จบคิว
+                    </button>
                   </>
                 ) : (
                   <p className="empty">ยังไม่มีคิว จองเป็นคิวแรกได้เลย</p>
@@ -80,8 +95,13 @@ export default function Page() {
                 {waiting.map((b, i) => (
                   <li key={b.id}>
                     <span className="bib">{i + 1}</span>
-                    <span className="who">{b.name}<small>จองเมื่อ {fmt(b.createdAt)}</small></span>
-                    <button className="ghost" onClick={() => remove(b.id)}>ยกเลิก</button>
+                    <span className="who">
+                      {b.name}
+                      <small>จองเมื่อ {fmt(b.createdAt)}</small>
+                    </span>
+                    <button className="ghost" onClick={() => remove(b.id)}>
+                      ยกเลิก
+                    </button>
                   </li>
                 ))}
               </ol>
@@ -97,12 +117,26 @@ export default function Page() {
                     aria-label="ชื่อผู้จอง"
                   />
                   <div className="row">
-                    <button type="submit" className="book" disabled={busy}>ยืนยันจอง</button>
-                    <button type="button" className="ghost" onClick={() => setFormTeam(null)}>ปิด</button>
+                    <button type="submit" className="book" disabled={busy}>
+                      ยืนยันจอง
+                    </button>
+                    <button
+                      type="button"
+                      className="ghost"
+                      onClick={() => setFormTeam(null)}
+                    >
+                      ปิด
+                    </button>
                   </div>
                 </form>
               ) : (
-                <button className="book" onClick={() => { setFormTeam(t.id); setName(''); }}>
+                <button
+                  className="book"
+                  onClick={() => {
+                    setFormTeam(t.id);
+                    setName("");
+                  }}
+                >
                   จองคิว{t.name}
                 </button>
               )}
